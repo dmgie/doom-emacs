@@ -78,11 +78,32 @@ targeted language will contain brief instructions as well.
 ** LSP-powered project search
 When =:completion ivy= or =:completion helm= is active, LSP is used to search a
 symbol indexed by the LSP server :
-| Keybind   | Description                         |
-|-----------+-------------------------------------|
-| =SPC c j= | Jump to symbol in current workspace |
-| =SPC c J= | Jump to symbol in any workspace     |
+| Keybind       | Description                               |
+|---------------+-------------------------------------------|
+| =SPC c j=     | Jump to symbol in current workspace       |
+| =SPC c J=     | Jump to symbol in any workspace           |
+| =SPC c a=     | Execute Code Action                       |
+| =SPC c i=     | Organises Imports of Buffer, if available |
+| =SPC c r=     | Rename symbol (and references to it)      |
+| =SPC c l T L= | Toggle client-server-protocol logging     |
+| =SPC c l s s= | Start LSP in current buffer               |
+| =SPC c l a h= | Document Highlight                        |
+| =SPC c l h h= | Describe Thing-at-point                   |
 
 * TODO Configuration
+The lsp-mode github has a page on [[https://emacs-lsp.github.io/lsp-mode/page/adding-new-language/][adding a new language server]] if one for the language currently doesn't exist. This is a minimal configuration with `python` and it's corresponding mode `python-mode` as an example.
+#+begin_src emacs-lisp :tangle yes
+(defvar lsp-language-id-configuration
+  '(...
+    (python-mode . "python")
+    ...))
+;; if you are adding the support for your language server in separate repo use
+;; (add-to-list 'lsp-language-id-configuration '(python-mode . "python"))
+
+(lsp-register-client
+ (make-lsp-client :new-connection (lsp-stdio-connection "pyls")
+                  :major-modes '(python-mode)
+                  :server-id 'pyls))
+#+end_src
 
 * TODO Troubleshooting
